@@ -1,0 +1,505 @@
+/*
+ * Palette: golds from the Hermes Agent `default` skin over a dark brown from the `warm-lightmode` family
+ * (NousResearch/hermes-agent, hermes_cli/skin_engine.py). Tokens marked "derived" do not exist in Hermes.
+ * Every colour in the app comes from these tokens.
+ */
+:root {
+  --bg: #1e120c; /* derived: darkened warm-lightmode #2C1810 */
+  --bg-panel: #2c1810; /* warm-lightmode.banner_text */
+  --bg-raised: #3a2418; /* derived */
+  --border: #cd7f32; /* default.banner_border / input_rule (bronze) */
+  --border-dim: #8b6914; /* warm-lightmode.banner_border */
+  --title: #ffd700; /* default.banner_title / response_border (gold) */
+  --accent: #ffbf00; /* default.banner_accent / ui_accent (amber) */
+  --label: #daa520; /* default.ui_label / session_label */
+  --dim: #b8860b; /* default.banner_dim */
+  --muted: #8a7a4a; /* default.status_bar_dim */
+  --text: #fff8dc; /* default.banner_text / prompt (cornsilk) */
+  --ok: #4caf50; /* default.ui_ok */
+  --warn: #ffa726; /* default.ui_warn */
+  --error: #ef5350; /* default.ui_error */
+  --critical: #ff6b6b; /* default.status_bar_critical */
+  --selection: #5c3d11; /* warm-lightmode.banner_title */
+
+  /* Ship colours: categorical, chosen to stand apart from the amber planets and from each other (derived). */
+  --ship-0: #56b4e9;
+  --ship-1: #ff7a5c;
+  --ship-2: #3ddc97;
+  --ship-3: #cc79a7;
+  --ship-4: #f5f5f5;
+  --ship-5: #7f9cff;
+  --ship-6: #c3e86b;
+  --ship-7: #b48cff;
+
+  --font: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+/* Optional light theme: warm-lightmode values. */
+:root[data-theme='light'] {
+  --bg: #f5f0e8; /* warm-lightmode.status_bar_bg */
+  --bg-panel: #f5efe0; /* warm-lightmode.completion_menu_bg */
+  --bg-raised: #e8dcc8; /* warm-lightmode.completion_menu_current_bg */
+  --border: #8b6914; /* warm-lightmode.banner_border */
+  --border-dim: #a0845c; /* warm-lightmode.session_border */
+  --title: #5c3d11; /* warm-lightmode.banner_title */
+  --accent: #8b4513; /* warm-lightmode.ui_accent */
+  --label: #5c3d11; /* warm-lightmode.ui_label */
+  --dim: #8b7355; /* warm-lightmode.banner_dim */
+  --muted: #8a8f98; /* warm-lightmode.status_bar_dim */
+  --text: #2c1810; /* warm-lightmode.banner_text */
+  --ok: #2e7d32;
+  --warn: #e65100;
+  --error: #c62828;
+  --critical: #c62828;
+  --selection: #e8dad0; /* warm-lightmode.selection_bg */
+  --ship-0: #0072b2;
+  --ship-1: #d55e00;
+  --ship-2: #009e73;
+  --ship-3: #cc79a7;
+  --ship-4: #2c1810;
+  --ship-5: #3355cc;
+  --ship-6: #5f8a00;
+  --ship-7: #7a3fd1;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--text);
+}
+
+button {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--title);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+button.primary {
+  border-color: var(--border);
+  color: var(--title);
+}
+button.danger:hover:not(:disabled) {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+input,
+select,
+textarea {
+  background: var(--bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  padding: 3px 6px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 0;
+}
+input[type='checkbox'] {
+  accent-color: var(--accent);
+}
+input[type='number'] {
+  width: 7em;
+}
+label {
+  color: var(--label);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  height: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+/* Banner */
+.banner {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  padding: 8px 16px 2px;
+  overflow: hidden;
+}
+.banner pre {
+  margin: 0;
+  color: var(--title);
+  font-size: 9px;
+  line-height: 1.05;
+  font-weight: 800;
+}
+.banner .sub {
+  color: var(--dim);
+  padding-bottom: 4px;
+}
+.banner .sub b {
+  color: var(--label);
+  font-weight: 600;
+}
+.theme-toggle {
+  margin-left: auto;
+  align-self: center;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px 16px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.tabs button {
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  background: transparent;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.tabs button.active {
+  border-color: var(--border);
+  background: var(--bg-panel);
+  color: var(--title);
+  margin-bottom: -1px;
+}
+
+.screen {
+  overflow: auto;
+  padding: 12px 16px;
+  min-height: 0;
+}
+
+/* Box-drawing panels: a 1px bronze border with the title cut into the top edge, like ╭─ TITLE ───╮ */
+.panel {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 10px 10px;
+  margin-top: 10px;
+  background: var(--bg-panel);
+  min-width: 0;
+}
+.panel > .panel-title {
+  position: absolute;
+  top: -0.8em;
+  left: 10px;
+  padding: 0 6px;
+  background: var(--bg);
+  color: var(--title);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.panel > .panel-title::before {
+  content: '─ ';
+  color: var(--border);
+}
+.panel > .panel-title::after {
+  content: ' ─';
+  color: var(--border);
+}
+.panel > .panel-actions {
+  position: absolute;
+  top: -0.85em;
+  right: 10px;
+  padding: 0 4px;
+  background: var(--bg);
+  display: flex;
+  gap: 4px;
+}
+.panel > .panel-actions button {
+  padding: 0 6px;
+  font-size: 12px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.muted {
+  color: var(--muted);
+}
+.dim {
+  color: var(--dim);
+}
+.label {
+  color: var(--label);
+}
+.gold {
+  color: var(--title);
+}
+.ok {
+  color: var(--ok);
+}
+.warn {
+  color: var(--warn);
+}
+.err {
+  color: var(--error);
+}
+.mono-pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Arena layout */
+.arena-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 14px;
+  min-height: 0;
+}
+.arena-canvas-wrap {
+  position: relative;
+  width: min(100%, calc(100vh - 330px));
+  min-width: min(100%, 320px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+.arena-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+.arena-overlay-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--title);
+  font-size: 22px;
+  font-weight: 800;
+  text-shadow: 0 0 8px var(--bg);
+}
+.ship-card .name {
+  font-weight: 600;
+}
+.bar {
+  letter-spacing: -1px;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  text-align: left;
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--bg-raised);
+  white-space: nowrap;
+}
+th {
+  color: var(--label);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-dim);
+}
+td.num,
+th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+tr.sel td {
+  background: var(--selection);
+}
+.table-wrap {
+  overflow-x: auto;
+}
+
+/* Terminal-style log */
+.term {
+  background: var(--bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  padding: 8px;
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Code editor */
+.editor {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  background: var(--bg);
+  max-height: 520px;
+  overflow: auto;
+}
+.editor .gutter {
+  color: var(--muted);
+  text-align: right;
+  padding: 6px 6px 6px 8px;
+  user-select: none;
+  white-space: pre;
+  border-right: 1px solid var(--bg-raised);
+}
+.editor textarea {
+  border: none;
+  resize: none;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 8px;
+  line-height: 1.45;
+  min-height: 300px;
+  tab-size: 2;
+}
+.diff .add {
+  color: var(--ok);
+}
+.diff .del {
+  color: var(--error);
+}
+
+/* Heatmap */
+.heat td.cell {
+  text-align: center;
+  color: var(--bg);
+  font-weight: 600;
+  min-width: 52px;
+}
+
+/* Command line + status bar */
+.cmdline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 16px;
+  border-top: 1px solid var(--border);
+}
+.cmdline .prompt {
+  color: var(--text);
+}
+.cmdline input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 2px 0;
+}
+.cmdline input:focus {
+  outline: none;
+}
+.cmdline .feedback {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
+}
+.statusbar {
+  display: flex;
+  gap: 16px;
+  padding: 3px 16px;
+  background: var(--bg-panel);
+  color: var(--muted);
+  border-top: 1px solid var(--border-dim);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.statusbar b {
+  color: var(--title);
+  font-weight: 600;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+/* Phone: view only, stacked. */
+@media (max-width: 860px) {
+  .arena-layout,
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .arena-canvas-wrap {
+    width: 100%;
+  }
+  .banner pre {
+    font-size: 6px;
+  }
+  .banner .sub {
+    display: none;
+  }
+  .banner pre {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .theme-toggle {
+    flex-shrink: 0;
+  }
+  .cmdline {
+    display: none;
+  }
+  .edit-only {
+    display: none !important;
+  }
+}

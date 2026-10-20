@@ -1,0 +1,7 @@
+node_modules
+dist
+.tmp
+.vitest
+results*.json
+*.log
+tsconfig.tsbuildinfo

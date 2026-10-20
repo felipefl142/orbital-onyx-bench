@@ -1,0 +1,37 @@
+{
+  "name": "orbital-onyx-bench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Benchmark: LLMs write spaceship controllers that duel inside an N-planet gravity field.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc -b",
+    "bench": "tsx cli/bench.ts",
+    "e2e": "playwright test",
+    "generate": "tsx cli/generate.ts",
+    "dev:tailnet": "vite --host 0.0.0.0"
+  },
+  "dependencies": {
+    "acorn": "^8.19.0",
+    "dexie": "^4.4.6",
+    "dexie-react-hooks": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.1.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "undici": "^8.12.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}

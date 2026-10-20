@@ -97,9 +97,11 @@ for (const model of models.flatMap((m) => Array.from({ length: samples }, () => 
     },
   });
   const tag = opt('--tag');
-  let name = tag ? `${model}@${tag}-s1` : model;
+  // Provider-prefixed ids (deepseek/deepseek-v4.1-flash) become one file name: deepseek--deepseek-v4.1-flash.
+  const base = model.replace(/[\/:]/g, '--');
+  let name = tag ? `${base}@${tag}-s1` : base;
   const taken = (n: string) => ['.js', '.failed.js', '.gen.json'].some((ext) => existsSync(join(outDir, `${n}${ext}`)));
-  for (let v = 2; taken(name); v++) name = tag ? `${model}@${tag}-s${v}` : `${model}-v${v}`;
+  for (let v = 2; taken(name); v++) name = tag ? `${base}@${tag}-s${v}` : `${base}-v${v}`;
   if (rec.code) writeFileSync(join(outDir, `${name}${rec.ok ? '' : '.failed'}.js`), rec.code);
   // Records may be published: keep the provider's host out unless it is a public API.
   const host = new URL(baseUrl.startsWith('http') ? baseUrl : 'http://local').hostname;

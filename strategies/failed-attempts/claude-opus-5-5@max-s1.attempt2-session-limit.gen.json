@@ -1,0 +1,25 @@
+{
+ "ok": false,
+ "code": null,
+ "promptId": "onyx-prompt-v3",
+ "promptHash": "af2fee4174fc099d",
+ "params": {
+  "temperature": null,
+  "maxTokens": 0,
+  "effort": "max",
+  "maxRepairs": 3
+ },
+ "provider": {
+  "kind": "claude-code",
+  "baseUrl": "claude-code-cli",
+  "note": "Claude Code CLI, --effort max; temperature and max output tokens are the CLI defaults (not settable)"
+ },
+ "model": "claude-opus-5-5",
+ "attempts": [],
+ "repairs": 0,
+ "inputTokens": 0,
+ "outputTokens": 0,
+ "latencyMs": 0,
+ "error": "claude error: You've hit your session limit · resets 4:20pm (America/Sao_Paulo)",
+ "startedAt": "2026-10-20T16:50:00.498Z"
+}

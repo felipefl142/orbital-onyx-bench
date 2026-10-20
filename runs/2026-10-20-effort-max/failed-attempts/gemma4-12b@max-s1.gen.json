@@ -1,0 +1,105 @@
+{
+ "ok": false,
+ "code": null,
+ "promptId": "onyx-prompt-v3",
+ "promptHash": "af2fee4174fc099d",
+ "params": {
+  "temperature": 0.2,
+  "maxTokens": 64000,
+  "effort": "max",
+  "maxRepairs": 3
+ },
+ "provider": {
+  "kind": "openai",
+  "baseUrl": "local-openai-compatible"
+ },
+ "model": "gemma4-12b",
+ "attempts": [
+  {
+   "index": 0,
+   "request": "Write the strongest control program you can. It must survive the gravity field (do not crash into planets or leave the arena) and destroy the enemy ships.",
+   "response": "",
+   "code": null,
+   "validation": {
+    "ok": false,
+    "compileError": "no code block found",
+    "decisions": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "disabled": true,
+    "messages": [],
+    "text": "Your reply was cut off by the output token limit before the code block ended. Return a shorter module."
+   },
+   "inputTokens": 4101,
+   "outputTokens": 64000,
+   "latencyMs": 1300397.673247,
+   "stopReason": "length"
+  },
+  {
+   "index": 1,
+   "request": "Your program failed validation. Fix it and return the complete corrected module in one ```js block.\n\nValidation report:\nYour reply was cut off by the output token limit before the code block ended. Return a shorter module.",
+   "response": "",
+   "code": null,
+   "validation": {
+    "ok": false,
+    "compileError": "no code block found",
+    "decisions": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "disabled": true,
+    "messages": [],
+    "text": "Your reply was cut off by the output token limit before the code block ended. Return a shorter module."
+   },
+   "inputTokens": 4156,
+   "outputTokens": 64000,
+   "latencyMs": 1292199.903189,
+   "stopReason": "length"
+  },
+  {
+   "index": 2,
+   "request": "Your program failed validation. Fix it and return the complete corrected module in one ```js block.\n\nValidation report:\nYour reply was cut off by the output token limit before the code block ended. Return a shorter module.",
+   "response": "",
+   "code": null,
+   "validation": {
+    "ok": false,
+    "compileError": "no code block found",
+    "decisions": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "disabled": true,
+    "messages": [],
+    "text": "Your reply was cut off by the output token limit before the code block ended. Return a shorter module."
+   },
+   "inputTokens": 4211,
+   "outputTokens": 64000,
+   "latencyMs": 1293387.5652490002,
+   "stopReason": "length"
+  },
+  {
+   "index": 3,
+   "request": "Your program failed validation. Fix it and return the complete corrected module in one ```js block.\n\nValidation report:\nYour reply was cut off by the output token limit before the code block ended. Return a shorter module.",
+   "response": "",
+   "code": null,
+   "validation": {
+    "ok": false,
+    "compileError": "no code block found",
+    "decisions": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "disabled": true,
+    "messages": [],
+    "text": "Your reply was cut off by the output token limit before the code block ended. Return a shorter module."
+   },
+   "inputTokens": 4266,
+   "outputTokens": 64000,
+   "latencyMs": 1293653.6718070004,
+   "stopReason": "length"
+  }
+ ],
+ "repairs": 3,
+ "inputTokens": 16734,
+ "outputTokens": 256000,
+ "latencyMs": 5179638.813492,
+ "error": "failed validation after 3 repair round(s)",
+ "startedAt": "2026-10-20T19:21:51.693Z"
+}

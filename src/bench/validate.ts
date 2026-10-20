@@ -1,6 +1,6 @@
 import { runJob, StrategyPool } from './runner';
 import type { RuleSet } from '../sim/ruleset';
-import { IDLE, TURRET } from '../strategies/refs';
+import { HUNTER, IDLE, ORBITER, TURRET } from '../strategies/refs';
 
 export interface ValidationReport {
   ok: boolean;
@@ -14,12 +14,17 @@ export interface ValidationReport {
   text: string;
 }
 
-const SMOKE_SECONDS = 10;
+const SMOKE_SECONDS = 30;
 
-/** Compiles and runs 10 simulated seconds against idle and turret. Passing = compiles, no exceptions, not disabled. */
+/**
+ * Compiles and runs four 30-second smoke matches against shooting opponents, so that rarely taken paths (dodging,
+ * escaping a planet, picking among several enemies) run before a tournament: hunter 1v1, turret 1v1 with orbiting
+ * planets, idle 1v1 on a crowded 10-planet map, and a 4-ship free-for-all.
+ * Passing = compiles, no exceptions or invalid return values, not disabled, and the ship acts at least once.
+ */
 export function validateStrategy(code: string, rules: RuleSet): ValidationReport {
   const smokeRules: RuleSet = { ...rules, timeLimit: SMOKE_SECONDS };
-  const pool = new StrategyPool(smokeRules, { candidate: code, idle: IDLE, turret: TURRET });
+  const pool = new StrategyPool(smokeRules, { candidate: code, idle: IDLE, turret: TURRET, hunter: HUNTER, orbiter: ORBITER });
   const compileError = pool.compileError('candidate');
   if (compileError) {
     return {
@@ -34,8 +39,10 @@ export function validateStrategy(code: string, rules: RuleSet): ValidationReport
     };
   }
   const runs = [
-    runJob({ id: 0, map: { seed: 101, planets: 3, ships: 2, orbits: false }, strategies: ['candidate', 'idle'] }, pool, smokeRules, true),
+    runJob({ id: 0, map: { seed: 101, planets: 3, ships: 2, orbits: false }, strategies: ['candidate', 'hunter'] }, pool, smokeRules, true),
     runJob({ id: 1, map: { seed: 202, planets: 6, ships: 2, orbits: true }, strategies: ['turret', 'candidate'] }, pool, smokeRules, true),
+    runJob({ id: 2, map: { seed: 303, planets: 10, ships: 2, orbits: false }, strategies: ['candidate', 'idle'] }, pool, smokeRules, true),
+    runJob({ id: 3, map: { seed: 404, planets: 5, ships: 4, orbits: true }, strategies: ['hunter', 'candidate', 'turret', 'orbiter'] }, pool, smokeRules, true),
   ];
   let decisions = 0;
   let errors = 0;
@@ -63,7 +70,7 @@ export function validateStrategy(code: string, rules: RuleSet): ValidationReport
   const text = ok
     ? `OK: ${decisions} decisions, ${timeouts} budget overruns, no errors.`
     : [
-        `${decisions} decisions over two ${SMOKE_SECONDS}-second smoke matches.`,
+        `${decisions} decisions over four ${SMOKE_SECONDS}-second smoke matches (vs hunter, vs turret with orbiting planets, vs idle on 10 planets, 4-ship free-for-all).`,
         `Exceptions or invalid return values: ${errors}. Op-budget overruns: ${timeouts}. Disabled: ${disabled ? 'yes' : 'no'}. Acted: ${acted ? 'yes' : 'no'}.`,
         ...messages.map((m, i) => `--- error ${i + 1} ---\n${m}`),
       ].join('\n');

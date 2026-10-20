@@ -157,3 +157,7 @@ cli/            npm run bench
 - Um `sort` com comparador inconsistente pode ordenar diferente em motores diferentes.
 - A estética segue o skin padrão do Hermes Agent (dourados) sobre um marrom do skin `warm-lightmode`; não usa nome,
   símbolo nem logotipo do Hermes.
+
+## Licença
+
+MIT. Veja [LICENSE](LICENSE).

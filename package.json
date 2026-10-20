@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Benchmark: LLMs write spaceship controllers that duel inside an N-planet gravity field.",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -111,10 +111,16 @@ process.stdout.write('\n');
 const anchor = ids.includes('idle') ? 'idle' : null;
 const lb = buildLeaderboard(ids, results, anchor, Number(opt('--resamples', '1000')));
 const fmt = (x: number, d = 0) => (Number.isFinite(x) ? x.toFixed(d) : '—');
-console.log('\n  #  strategy              Elo  (95% CI)          win%   surv  planet%  acc%  faults/1k');
+const nameW = Math.max(18, ...lb.rows.map((r) => r.strategy.length));
+const leftW = 52 + nameW - 18;
+console.log(
+  '\n' +
+    `  #  ${'strategy'.padEnd(nameW)} ${'Elo'.padStart(6)}  (95% CI)`.padEnd(leftW) +
+    '  win%   surv  planet%  acc% faults/1k',
+);
 lb.rows.forEach((r, i) => {
   console.log(
-    `${String(i + 1).padStart(3)}  ${r.strategy.padEnd(18)} ${fmt(r.elo).padStart(6)}  [${fmt(r.eloLo)}, ${fmt(r.eloHi)}]`.padEnd(52) +
+    `${String(i + 1).padStart(3)}  ${r.strategy.padEnd(nameW)} ${fmt(r.elo).padStart(6)}  [${fmt(r.eloLo)}, ${fmt(r.eloHi)}]`.padEnd(leftW) +
       `${fmt(r.winRate * 100, 1).padStart(6)} ${fmt(r.survivalMean, 1).padStart(6)} ${fmt(r.planetDeathRate * 100, 1).padStart(7)} ${fmt(r.accuracy * 100, 1).padStart(5)} ${fmt(r.faultsPer1k, 2).padStart(9)}`,
   );
 });
